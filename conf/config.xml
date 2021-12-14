@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!-- Configuration file from librec-auto setup wizard. Modify as necessary.
+    Refer to https://librec-auto.readthedocs.io/en/latest/  for documentation
+    on configuration file structure. -->
+
+<!-- THIS IS MY CONFIGURATION FILE FOR RECSYS CLASS -->
+
+<librec-auto>
+        <!-- GLOBAL OPTIONS SECTION -->
+        <random-seed>202001</random-seed>
+        <thread-count>1</thread-count>
+        <library src="system">default-algorithms.xml</library>
+
+        <!-- DATA SECTION -->
+        <!-- Note: data-dir is relative to the study directory -->
+        <data>
+            <data-dir>data</data-dir>
+            <format>UIR</format>
+            <data-file format="text">ratings_control_1_small.csv</data-file>
+            <!-- <data-file format="text">ratings_control_2_small.csv</data-file> -->
+
+        </data>
+
+       
+
+        <!-- SPLITTER SECTION -->
+        <splitter>
+                <model>ratio</model>
+                <dim>userfixed</dim>
+                <ratio>0.8</ratio>
+                <save>true</save>
+        </splitter>
+
+
+
+		<!--
+         <features>
+            <appender-class>net.librec.data.convertor.appender.ItemFeatureAppender</appender-class>
+            <item-feature-file>items_k_core.csv</item-feature-file>
+        </features>
+			-->
+
+        <!-- ALGORITHM SECTION -->
+
+        	<!-- ALGORITHM 1 -->
+<!--             <alg>
+                <class>biasedmf</class>
+                <learn-rate>0.01</learn-rate>
+                <learn-rate-max>0.01</learn-rate-max>
+                <learn-rate-decay>1.0</learn-rate-decay>
+                <bold-driver>false</bold-driver>
+                <iterator-max>10</iterator-max>
+                <user-reg>0.01</user-reg>
+                <item-reg>0.001</item-reg>
+                <bias-reg>0.01</bias-reg>
+                <num-factors>
+                	<value>60</value>
+                	<value>80</value>
+                	<value>100</value>
+                </num-factors>
+                <early-stop>true</early-stop>
+            </alg> -->
+
+            <!-- ALGORITHM 2 -->
+<!--             <alg name="alg:itemknn">
+				<class>itemknn</class>
+				<similarity type="item">pcc</similarity>
+				<neighborhood-size>
+					<value>50</value>
+					<value>100</value>
+					<value>200</value>
+				</neighborhood-size>
+				<shrinkage>10</shrinkage>
+			</alg> -->
+
+			<!-- ALGORITHM 3 -->
+			<alg name="alg:userknn">
+				<class>userknn</class>
+				<similarity type="user">pcc</similarity>
+				<neighborhood-size>
+					<value>50</value>
+					<value>100</value>
+					<value>200</value>
+				</neighborhood-size>
+				<shrinkage>10</shrinkage>
+			</alg>
+
+
+<!-- RUN THIS FOR NORMAL NDCG METRIC OUTPUT -->
+
+        <metric>
+            <ranking>true</ranking>
+            <list-size>
+            	<value>100</value>
+            	<value>200</value>
+            	<value>400</value>
+            </list-size>
+            <class>ndcg</class>
+            <!-- <class>precision</class> -->
+
+        </metric>
+
+
+        <!-- POST-PROCESSING SECTION  -->
+        <post>
+                <script lang="python3" src="system">
+                    <script-name>result_graphics.py</script-name>
+                    <param name="browser">true</param>
+                </script> 
+        </post>
+</librec-auto>
